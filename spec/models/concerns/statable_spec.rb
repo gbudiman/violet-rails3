@@ -10,7 +10,15 @@ RSpec.describe Concerns::Statable, type: :concern do
 
     Concerns::Statable::ATTRIBUTES.each do |attribute|
       it { is_expected.to respond_to(attribute) }
-      it { expect(blank_hash.send(attribute)).to eq(Concerns::Statable::DEFAULT_VALUE) }
+      it "updates base value of #{attribute}" do
+        expect do
+          blank_hash.send("#{attribute}=", 31)
+        end.to change{blank_hash[attribute][:base]}.from(nil).to(31)
+      end
+      it "fetches total" do
+        expect(blank_hash.send("#{attribute}!")).to eq(0)
+      end
+      #it { expect(blank_hash.send(attribute)).to eq(Concerns::Statable::DEFAULT_VALUE) }
     end
   end
 end

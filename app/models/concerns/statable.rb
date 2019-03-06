@@ -7,9 +7,11 @@ module Concerns
 
     def self.extended(base)
       ATTRIBUTES.each do |attribute|
-        base.define_singleton_method(attribute) { base[attribute] }
-        base.define_singleton_method("#{attribute}=") { |x| base[attribute] = x }
-        base[attribute] ||= 1
+        base[attribute] = {}.extend(Concerns::StatQueryable)
+        base.define_singleton_method(attribute) { Proxy.new(base, attribute) }
+        base.define_singleton_method("#{attribute}=") { |x| base[attribute].base(x) }
+        base.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).fetch }
+        #base[attribute] ||= 1
       end
     end
   end
