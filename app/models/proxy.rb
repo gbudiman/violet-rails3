@@ -4,7 +4,11 @@ class Proxy
     @accessor = ancestor[accessor]
   end
 
-  def fetch
-    @accessor.fetch
+  def fetch_aggregate
+    @accessor.fetch_aggregate
+  end
+
+  def assign_root(value)
+    @accessor.assign_root(value)
   end
 end

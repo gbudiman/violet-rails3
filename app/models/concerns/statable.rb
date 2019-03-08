@@ -9,8 +9,8 @@ module Concerns
       ATTRIBUTES.each do |attribute|
         base[attribute] = {}.extend(Concerns::StatQueryable)
         base.define_singleton_method(attribute) { Proxy.new(base, attribute) }
-        base.define_singleton_method("#{attribute}=") { |x| base[attribute].base(x) }
-        base.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).fetch }
+        base.define_singleton_method("#{attribute}=") { |x| Proxy.new(base, attribute).assign_root(x) }
+        base.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).fetch_aggregate }
         #base[attribute] ||= 1
       end
     end

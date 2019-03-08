@@ -13,7 +13,7 @@ RSpec.describe Concerns::Statable, type: :concern do
       it "updates base value of #{attribute}" do
         expect do
           blank_hash.send("#{attribute}=", 31)
-        end.to change{blank_hash[attribute][:base]}.from(nil).to(31)
+        end.to change{blank_hash[attribute]}.from({}).to({base: 31})
       end
       it "fetches total" do
         expect(blank_hash.send("#{attribute}!")).to eq(0)
