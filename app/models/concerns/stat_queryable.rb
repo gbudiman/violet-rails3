@@ -4,6 +4,13 @@ module Concerns
     cattr_accessor :root_accessor do
       :base
     end
+    cattr_accessor :identity_value do
+      1
+    end
+
+    def self.extended(base)
+      base.assign_root(identity_value)
+    end
 
     def assign_root(value)
       self[root_accessor] = value
