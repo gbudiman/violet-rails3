@@ -19,5 +19,19 @@ module Concerns
     def fetch_aggregate
       self.values.reduce(0) { |a, b| a + b }
     end
+
+    def disable(*args)
+      args.map { |x| self[x] = 0 if self[x].present? }
+      fetch_aggregate
+    end
+
+    def method_missing(method_name, *args, &block)
+      case method_name[-1]
+      when '='
+        self[method_name[0..-2].to_sym] = args.first
+      else
+        self[method_name] || 0
+      end
+    end
   end
 end
