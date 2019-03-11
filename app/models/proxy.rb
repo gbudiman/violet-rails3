@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Proxy
   attr_accessor :accessor
 

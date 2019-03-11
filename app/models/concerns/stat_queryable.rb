@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 module Concerns
   module StatQueryable
+    include Concerns::Augmentable
     extend ActiveSupport::Concern
+
     cattr_accessor :root_accessor do
       :base
     end
@@ -17,7 +21,7 @@ module Concerns
     end
 
     def fetch_aggregate
-      self.values.reduce(0) { |a, b| a + b }
+      active_values.reduce(0) { |a, b| a + b }
     end
 
     def disable(*args)
@@ -25,13 +29,9 @@ module Concerns
       fetch_aggregate
     end
 
-    def method_missing(method_name, *args, &block)
-      case method_name[-1]
-      when '='
-        self[method_name[0..-2].to_sym] = args.first
-      else
-        self[method_name] || 0
-      end
+    def enable(*args)
+      args.map { |x| self[x] = cached_value(x) if self[x].present? }
+      fetch_aggregate
     end
   end
 end
