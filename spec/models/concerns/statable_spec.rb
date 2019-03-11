@@ -8,9 +8,23 @@ end
 
 RSpec.shared_examples 'summable members' do
   include_context 'with scaffolded augmented member'
-  it 'fetches total' do
-    expect(blank_hash.send("#{attribute}!")).to eq(blank_hash[attribute].identity_value + rand_augment)
+  it_behaves_like 'correctly-summed member'
+
+  context 'with non-identity root value' do
+    let(:rand_root) { rand(1..99) }
+
+    before { blank_hash.send("#{attribute}=", rand_root) }
+
+    it_behaves_like 'correctly-summed member'
   end
+end
+
+RSpec.shared_examples 'correctly-summed member' do
+  let(:expectation) do
+    rand_augment + (defined?(rand_root) ? rand_root : blank_hash[attribute].identity_value)
+  end
+
+  it { expect(blank_hash.send("#{attribute}!")).to eq(expectation) }
 end
 
 RSpec.shared_examples 'actionable augmented member' do
