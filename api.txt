@@ -1,0 +1,50 @@
+agent
+  #stat [VioletProxy]
+    #base
+    #sum
+  #str        -> #stat#str          [StatQueryable]
+  #agi        -> #stat#str          [StatQueryable]
+  #dex        -> #stat#str          [StatQueryable]
+  #vit        -> #stat#str          [StatQueryable]
+  #int        -> #stat#str          [StatQueryable]
+  #fai        -> #stat#str          [StatQueryable]
+  #patk       -> #stat#str          [StatQueryable]
+  #matk       -> #stat#str          [StatQueryable]
+  #pdef       -> #stat#str          [StatQueryable]
+  #mdef       -> #stat#str          [StatQueryable]
+  #aspd       -> #stat#str          [StatQueryable] // AP recharge speed
+  #mspd       -> #stat#str          [StatQueryable] // Move speed
+  #hit        -> #stat#str          [StatQueryable]
+  #flee       -> #stat#str          [StatQueryable]
+  #resource [VioletProxy]
+    #current
+    #capacity
+    #nullify
+  #hp         -> #resource#hp       [ResourceQueryable]
+  #ap         -> #resource#ap       [ResourceQueryable]
+  #limit      -> #resource#limit    [ResourceQueryable]
+  #trance     -> #resource#trance   [ResourceQueryable]
+  #orb        -> #resource#orb      [ResourceQueryable]
+  #impulse    -> #resource#impulse  [ResourceQueryable]
+  #malice     -> #resource#malice   [ResourceQueryable]
+  #mana       -> #resource#mana     [ResourceQueryable]
+  #soul       -> #resource#soul     [ResourceQueryable]
+  #gestalt    -> #resource#gestalt  [ResourceQueryable]
+  #prayer     -> #resource#prayer   [ResourceQueryable]
+  #weight     -> #resource#weight   [ResourceQueryable]
+  #skills [VioletProxy]
+  #execute    -> #skills#execute
+  #effects [VioletProxy]
+  #anatomies [VioletProxy]
+  #maim       -> #anatomies#maim
+  #sunder     -> #anatomies#sunder
+  #repair     -> #anatomies#repair
+  #pristine   -> #anatomies#pristine
+  #disarm     -> #anatomies#disarm
+  #pick       -> #anatomies#pick [AnatomyOperable]
+  #equip      -> #anatomies#equip [AnatomyOperable]
+  #equipments [VioletProxy]
+  #drop       -> #equipments#drop
+  #collect_effects_from_equipments
+  #collect_effects_from_passive_skills
+  #apply_effects
