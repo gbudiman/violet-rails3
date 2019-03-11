@@ -16,6 +16,7 @@ RSpec.shared_examples 'summable members' do
     before { blank_hash.send("#{attribute}=", rand_root) }
 
     it_behaves_like 'correctly-summed member'
+    it { expect(blank_hash.send(attribute).send(:non_existant_augment)).to eq(0) }
   end
 end
 
