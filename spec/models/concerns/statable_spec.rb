@@ -62,6 +62,12 @@ RSpec.shared_examples 'switchable augmented member' do
   end
 end
 
+RSpec.shared_examples 'correct class accessors' do
+  it { is_expected.to respond_to(attribute) }
+  it { expect(blank_hash[attribute].root_accessor).to eq(root_accessor) }
+  it { expect(blank_hash[attribute].identity_value).to eq(identity_value) }
+end
+
 RSpec.describe Concerns::Statable, type: :concern do
   subject(:blank_hash) { {} }
 
@@ -69,7 +75,11 @@ RSpec.describe Concerns::Statable, type: :concern do
     before { blank_hash.extend(Concerns::Statable) }
 
     Concerns::Statable::ATTRIBUTES.each do |attribute|
-      it { is_expected.to respond_to(attribute) }
+      let(:attribute) { attribute }
+      include_context 'correct class accessors' do
+        let(:root_accessor) { :innate }
+        let(:identity_value) { 1 }
+      end
       it "updates base value of #{attribute}" do
         root_accessor = blank_hash[attribute].root_accessor
         identity_value = blank_hash[attribute].identity_value
@@ -83,12 +93,8 @@ RSpec.describe Concerns::Statable, type: :concern do
         let(:augment) { :almighty_blessing }
         let(:rand_augment) { rand(1..30) * [-1, 1].sample }
 
-        it_behaves_like 'summable members' do
-          let(:attribute) { attribute }
-        end
-        it_behaves_like 'switchable augmented member' do
-          let(:attribute) { attribute }
-        end
+        it_behaves_like 'summable members'
+        it_behaves_like 'switchable augmented member'
       end
     end
   end

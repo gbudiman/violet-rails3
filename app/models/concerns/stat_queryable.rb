@@ -6,7 +6,7 @@ module Concerns
     extend ActiveSupport::Concern
 
     cattr_accessor :root_accessor do
-      :base
+      :innate
     end
     cattr_accessor :identity_value do
       1
