@@ -4,15 +4,13 @@ module Concerns
   module Augmentable
     extend ActiveSupport::Concern
 
-    included do
-      def method_missing(method_name, *args)
-        case method_name[-1]
-        when '='
-          attribute_name = method_name[0..-2]
-          assign_value(attribute_name, args.first)
-        else
-          self[method_name] || 0
-        end
+    def method_missing(method_name, *args)
+      case method_name[-1]
+      when '='
+        attribute_name = method_name[0..-2]
+        assign_value(attribute_name, args.first)
+      else
+        self[method_name] || 0
       end
     end
 
