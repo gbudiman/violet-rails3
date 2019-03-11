@@ -3,10 +3,11 @@
 require 'rails_helper'
 
 RSpec.shared_context 'with scaffolded augmented member' do
-  before { blank_hash.send(attribute).augment = rand_augment }
+  before { blank_hash.send(attribute).send("#{augment}=", rand_augment) }
 end
 
 RSpec.shared_context 'with augmentable member' do
+  let(:augment) { :almighty_blessing }
   let(:rand_augment) { rand(-30..30) }
   include_context 'with scaffolded augmented member'
   it 'fetches total' do
@@ -14,32 +15,39 @@ RSpec.shared_context 'with augmentable member' do
   end
 end
 
+RSpec.shared_examples 'actionable augmented member' do
+  it {
+    expect do
+      action
+    end.to change { blank_hash[attribute][augment] }.from(pre_change).to(post_change)
+      .and change { blank_hash.send("#{attribute}!") }.by change_amount
+  }
+
+  it { expect(action).to eq(final_value) }
+end
+
 RSpec.shared_context 'with switchable augmented member' do
+  let(:augment) { :almighty_blessing }
   let(:rand_augment) { rand(-30..30) }
   include_context 'with scaffolded augmented member'
-  it 'disables' do
-    expect do
-      blank_hash.send(attribute).disable(:augment)
-    end.to change { blank_hash[attribute][:augment] }.from(rand_augment).to(0)
-      .and change { blank_hash.send("#{attribute}!") }.by(-rand_augment)
+  it_behaves_like 'actionable augmented member' do
+    let(:action) { blank_hash.send(attribute).disable(augment) }
+    let(:pre_change) { rand_augment }
+    let(:post_change) { 0 }
+    let(:change_amount) { -rand_augment }
+    let(:final_value) { blank_hash[attribute].identity_value }
   end
-  it { expect(blank_hash.send(attribute).disable(:augment)).to eq(blank_hash[attribute].identity_value) }
 
   describe 'then re-enables' do
-    before { blank_hash.send(attribute).disable(:augment) }
+    before { blank_hash.send(attribute).disable(augment) }
 
-    it {
-      expect do
-        blank_hash.send(attribute).enable(:augment)
-      end.to change { blank_hash[attribute][:augment] }.from(0).to(rand_augment)
-        .and change { blank_hash.send("#{attribute}!") }.by(rand_augment)
-    }
-
-    it {
-      expect(blank_hash.send(attribute).enable(:augment)).to eq(
-        blank_hash[attribute].identity_value + rand_augment
-      )
-    }
+    it_behaves_like 'actionable augmented member' do
+      let(:action) { blank_hash.send(attribute).enable(augment) }
+      let(:pre_change) { 0 }
+      let(:post_change) { rand_augment }
+      let(:change_amount) { rand_augment }
+      let(:final_value) { blank_hash[attribute].identity_value + rand_augment }
+    end
   end
 end
 
@@ -59,6 +67,7 @@ RSpec.describe Concerns::Statable, type: :concern do
           blank_hash[attribute]
         }.from(root_accessor => identity_value).to(root_accessor => rand_base)
       end
+
       it_behaves_like 'with augmentable member' do
         let(:attribute) { attribute }
       end
