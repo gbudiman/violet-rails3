@@ -4,6 +4,12 @@ module Concerns
   module Augmentable
     extend ActiveSupport::Concern
 
+    class_methods do
+      def extended(base)
+        base.assign_root(identity_value)
+      end
+    end
+
     def method_missing(method_name, *args)
       case method_name[-1]
       when '='
@@ -12,6 +18,24 @@ module Concerns
       else
         self[method_name] || 0
       end
+    end
+
+    def root
+      self[root_accessor]
+    end
+
+    def assign_root(value)
+      self[root_accessor] = value
+    end
+
+    def disable(*args)
+      args.map { |x| self[x] = 0 if self[x].present? }
+      aggregate
+    end
+
+    def enable(*args)
+      args.map { |x| self[x] = cached_value(x) if self[x].present? }
+      aggregate
     end
 
     def active_values
