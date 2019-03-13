@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
 module Concerns
-  module Statable
+  module Resourceable
     include Concerns::Proxyable
-    ATTRIBUTES = %i[str dex agi vit int fai patk matk pdef mdef aspd mspd hit flee].freeze
-
-    cattr_accessor :extension_module do
-      Concerns::StatQueryable
-    end
+    ATTRIBUTES = %i[hp ap limit trance orb impulse malice mana soul gestalt prayer weight]
 
     def self.extended(base)
       ATTRIBUTES.each do |attribute|
