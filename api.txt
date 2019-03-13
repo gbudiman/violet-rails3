@@ -1,7 +1,7 @@
 agent
   #stat [VioletProxy]
-    #innate
-    #total
+    #root
+    #aggregate
   #str        -> #stat#str          [StatQueryable]
   #agi        -> #stat#str          [StatQueryable]
   #dex        -> #stat#str          [StatQueryable]

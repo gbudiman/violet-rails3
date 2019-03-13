@@ -66,6 +66,7 @@ RSpec.shared_examples 'correct class accessors' do
   it { is_expected.to respond_to(attribute) }
   it { expect(blank_hash[attribute].root_accessor).to eq(root_accessor) }
   it { expect(blank_hash[attribute].identity_value).to eq(identity_value) }
+  it { expect(blank_hash[attribute].root).to eq(identity_value) }
 end
 
 RSpec.describe Concerns::Statable, type: :concern do

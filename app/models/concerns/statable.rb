@@ -10,7 +10,7 @@ module Concerns
         base.tap do |t|
           t.define_singleton_method(attribute) { Proxy.new(base, attribute) }
           t.define_singleton_method("#{attribute}=") { |x| Proxy.new(base, attribute).assign_root(x) }
-          t.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).fetch_aggregate }
+          t.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).aggregate }
         end
       end
     end
