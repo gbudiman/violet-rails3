@@ -70,9 +70,9 @@ RSpec.shared_examples 'correct class accessors' do
 end
 
 RSpec.describe Concerns::Statable, type: :concern do
-  subject(:blank_hash) { {} }
-
   context 'with blank hash' do
+    subject(:blank_hash) { {} }
+
     before { blank_hash.extend(Concerns::Statable) }
 
     Concerns::Statable::ATTRIBUTES.each do |attribute|
@@ -97,6 +97,25 @@ RSpec.describe Concerns::Statable, type: :concern do
         it_behaves_like 'summable members'
         it_behaves_like 'switchable augmented member'
       end
+    end
+  end
+
+  context 'with prepopulated hash' do
+    subject(:pre_hash) do
+      {
+        str: rand(1..99),
+        agi: rand(1..99),
+        vit: rand(1..99),
+        dex: rand(1..99),
+        int: rand(1..99),
+        fai: rand(1..99)
+      }
+    end
+
+    let!(:pop_hash) { pre_hash.dup.extend(Concerns::Statable) }
+
+    Concerns::Statable::ATTRIBUTES.each do |attribute|
+      it { expect(pop_hash.send("#{attribute}!")).to eq(pre_hash[attribute] || pop_hash[attribute].identity_value) }
     end
   end
 end
