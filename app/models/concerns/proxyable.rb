@@ -15,6 +15,10 @@ module Concerns
           t.send("#{attribute}=", initial_value)
         end
       end
+
+      def extended(base)
+        base.attributes.each { |attribute| proxify(base, attribute) }
+      end
     end
   end
 end
