@@ -3,12 +3,13 @@
 module Concerns
   module Resourceable
     include Concerns::Proxyable
-    ATTRIBUTES = %i[hp ap limit trance orb impulse malice mana soul gestalt prayer weight].freeze
 
-    def self.extended(base)
-      ATTRIBUTES.each do |attribute|
-        proxify(base, attribute)
-      end
+    cattr_accessor :extension_module do
+      Concerns::ResourceQueryable
+    end
+
+    cattr_accessor :attributes do
+      %i[hp ap limit trance orb impulse malice mana soul gestalt prayer weight].freeze
     end
   end
 end

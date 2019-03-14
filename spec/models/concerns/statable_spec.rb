@@ -114,7 +114,7 @@ RSpec.describe Concerns::Statable, type: :concern do
 
     let!(:pop_hash) { pre_hash.dup.extend(Concerns::Statable) }
 
-    Concerns::Statable::attributes.each do |attribute|
+    Concerns::Statable.attributes.each do |attribute|
       it { expect(pop_hash.send("#{attribute}!")).to eq(pre_hash[attribute] || pop_hash[attribute].identity_value) }
     end
   end
