@@ -11,7 +11,7 @@ module Concerns
 
     def self.extended(base)
       ATTRIBUTES.each do |attribute|
-        self.proxify(base, attribute)
+        proxify(base, attribute)
       end
     end
   end
