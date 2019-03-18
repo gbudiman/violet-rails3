@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Concerns
-  module StatQueryable
+  module ResourceQueryable
     include Concerns::Augmentable
     extend ActiveSupport::Concern
 

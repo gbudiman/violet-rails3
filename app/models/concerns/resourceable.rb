@@ -8,8 +8,33 @@ module Concerns
       Concerns::ResourceQueryable
     end
 
+    cattr_accessor :capacities do
+      {
+        hp: 1,
+        ap: 100,
+        limit: 32,
+        trance: 100,
+        orb: 0,
+        impulse: 32,
+        malice: 32,
+        mana: 0,
+        soul: 8,
+        gestalt: 100,
+        prayer: 100,
+        weight: 10,
+      }
+    end
+
     cattr_accessor :attributes do
-      %i[hp ap limit trance orb impulse malice mana soul gestalt prayer weight].freeze
+      capacities.keys
+    end
+
+    def self.extended(base)
+      base.attributes.each do |attribute|
+        initial_value = base[attribute] || extension_module.identity_value
+        proxify(base, attribute)
+        base.send("#{attribute}=", initial_value)
+      end
     end
   end
 end

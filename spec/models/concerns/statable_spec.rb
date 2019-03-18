@@ -62,7 +62,7 @@ RSpec.shared_examples 'switchable augmented member' do
   end
 end
 
-RSpec.shared_examples 'correct class accessors' do
+RSpec.shared_examples 'class_accessors' do
   it { is_expected.to respond_to(attribute) }
   it { expect(blank_hash[attribute].root_accessor).to eq(root_accessor) }
   it { expect(blank_hash[attribute].identity_value).to eq(identity_value) }
@@ -77,7 +77,7 @@ RSpec.describe Concerns::Statable, type: :concern do
 
     Concerns::Statable.attributes.each do |attribute|
       let(:attribute) { attribute }
-      include_context 'correct class accessors' do
+      include_context 'class_accessors' do
         let(:root_accessor) { :innate }
         let(:identity_value) { 1 }
       end
