@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_context 'with scaffolded augmented member' do
-  before { blank_hash.send(attribute).send("#{augment}=", rand_augment) }
+  before { subject.send(attribute).send("#{augment}=", rand_augment) }
 end
 
 RSpec.shared_examples 'summable members' do
@@ -13,19 +13,19 @@ RSpec.shared_examples 'summable members' do
   context 'with non-identity root value' do
     let(:rand_root) { rand(1..99) }
 
-    before { blank_hash.send("#{attribute}=", rand_root) }
+    before { subject.send("#{attribute}=", rand_root) }
 
     it_behaves_like 'correctly-summed member'
-    it { expect(blank_hash.send(attribute).send(:non_existant_augment)).to eq(0) }
+    it { expect(subject.send(attribute).send(:non_existant_augment)).to eq(0) }
   end
 end
 
 RSpec.shared_examples 'correctly-summed member' do
   let(:expectation) do
-    rand_augment + (defined?(rand_root) ? rand_root : blank_hash[attribute].identity_value)
+    rand_augment + (defined?(rand_root) ? rand_root : subject[attribute].identity_value)
   end
 
-  it { expect(blank_hash.send("#{attribute}!")).to eq(expectation) }
+  it { expect(subject.send("#{attribute}!")).to eq(expectation) }
 end
 
 RSpec.shared_examples 'actionable augmented member' do
@@ -35,8 +35,8 @@ RSpec.shared_examples 'actionable augmented member' do
     rand_execution.times { pre_action } if defined?(pre_action)
     expect do
       rand_execution.times { action }
-    end.to change { blank_hash[attribute][augment] }.from(pre_change).to(post_change)
-      .and change { blank_hash.send("#{attribute}!") }.by change_amount
+    end.to change { subject[attribute][augment] }.from(pre_change).to(post_change)
+      .and change { subject.send("#{attribute}!") }.by change_amount
   end
 
   it { expect(action).to eq(final_value) }
@@ -45,50 +45,36 @@ end
 RSpec.shared_examples 'switchable augmented member' do
   include_context 'with scaffolded augmented member'
   it_behaves_like 'actionable augmented member' do
-    let(:action) { blank_hash.send(attribute).disable(augment) }
+    let(:action) { subject.send(attribute).disable(augment) }
     let(:pre_change) { rand_augment }
     let(:post_change) { 0 }
-    let(:final_value) { blank_hash[attribute].identity_value }
+    let(:final_value) { subject[attribute].identity_value }
   end
 
   describe 'then re-enables' do
     it_behaves_like 'actionable augmented member' do
-      let(:pre_action) { blank_hash.send(attribute).disable(augment) }
-      let(:action) { blank_hash.send(attribute).enable(augment) }
+      let(:pre_action) { subject.send(attribute).disable(augment) }
+      let(:action) { subject.send(attribute).enable(augment) }
       let(:pre_change) { 0 }
       let(:post_change) { rand_augment }
-      let(:final_value) { blank_hash[attribute].identity_value + rand_augment }
+      let(:final_value) { subject[attribute].identity_value + rand_augment }
     end
   end
 end
 
-RSpec.shared_examples 'class_accessors' do
-  it { is_expected.to respond_to(attribute) }
-  it { expect(blank_hash[attribute].root_accessor).to eq(root_accessor) }
-  it { expect(blank_hash[attribute].identity_value).to eq(identity_value) }
-  it { expect(blank_hash[attribute].root).to eq(identity_value) }
-end
-
 RSpec.describe Concerns::Statable, type: :concern do
   context 'with blank hash' do
-    subject(:blank_hash) { {} }
+    let(:subject) { {} }
 
-    before { blank_hash.extend(Concerns::Statable) }
+    before { subject.extend(Concerns::Statable) }
 
     Concerns::Statable.attributes.each do |attribute|
       let(:attribute) { attribute }
-      include_context 'class_accessors' do
+      include_context 'class_accessors_identity' do
         let(:root_accessor) { :innate }
         let(:identity_value) { 1 }
       end
-      it "updates base value of #{attribute}" do
-        root_accessor = blank_hash[attribute].root_accessor
-        identity_value = blank_hash[attribute].identity_value
-        rand_base = rand(identity_value + 1..100)
-        expect { blank_hash.send("#{attribute}=", rand_base) }.to change {
-          blank_hash[attribute]
-        }.from(root_accessor => identity_value).to(root_accessor => rand_base)
-      end
+      include_context 'class_accessors_root_state'
 
       context 'with augmentation' do
         let(:augment) { :almighty_blessing }
@@ -101,7 +87,7 @@ RSpec.describe Concerns::Statable, type: :concern do
   end
 
   context 'with prepopulated hash' do
-    subject(:pre_hash) do
+    let(:subject) do
       {
         str: rand(1..99),
         agi: rand(1..99),
@@ -112,10 +98,10 @@ RSpec.describe Concerns::Statable, type: :concern do
       }
     end
 
-    let!(:pop_hash) { pre_hash.dup.extend(Concerns::Statable) }
+    let!(:pop_hash) { subject.dup.extend(Concerns::Statable) }
 
     Concerns::Statable.attributes.each do |attribute|
-      it { expect(pop_hash.send("#{attribute}!")).to eq(pre_hash[attribute] || pop_hash[attribute].identity_value) }
+      it { expect(pop_hash.send("#{attribute}!")).to eq(subject[attribute] || pop_hash[attribute].identity_value) }
     end
   end
 end

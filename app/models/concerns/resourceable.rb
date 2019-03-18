@@ -12,16 +12,16 @@ module Concerns
       {
         hp: 1,
         ap: 100,
-        limit: 32,
-        trance: 100,
+        limit: 0,
+        trance: 0,
         orb: 0,
-        impulse: 32,
-        malice: 32,
+        impulse: 0,
+        malice: 0,
         mana: 0,
-        soul: 8,
-        gestalt: 100,
-        prayer: 100,
-        weight: 10,
+        soul: 0,
+        gestalt: 0,
+        prayer: 0,
+        weight: 10
       }
     end
 
