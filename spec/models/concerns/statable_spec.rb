@@ -98,8 +98,8 @@ RSpec.describe Concerns::Statable, type: :concern do
 
     let!(:pop_hash) { input.dup.extend(Concerns::Statable) }
 
-    Concerns::Statable.attributes.each do |attribute|
-      it { expect(pop_hash.send("#{attribute}!")).to eq(input[attribute] || pop_hash[attribute].identity_value) }
+    Concerns::Statable.attributes.each do |attribute, identity_value|
+      it { expect(pop_hash.send("#{attribute}!")).to eq(input[attribute] || identity_value) }
     end
   end
 end
