@@ -8,33 +8,29 @@ module Concerns
       Concerns::ResourceQueryable
     end
 
+    # Phaseable: 2-phase. Accumulation and expenditure phase
+    # Accumulateable: accumulation by certain actions
+    # 
+
     cattr_accessor :capacities do
       {
         hp: 1,
         ap: 100,
-        limit: 0,
-        trance: 0,
-        orb: 0,
-        impulse: 0,
-        malice: 0,
-        mana: 0,
-        soul: 0,
-        gestalt: 0,
-        prayer: 0,
+        limit: 0, #Phaseable #SkillPartialable #ShieldBlockAccumulateable
+        trance: 0, #Phaseable #SkillPartialable #LowHealthAccumulateable
+        orb: 0, #OrbSummonAccumulateable
+        impulse: 0, #ImpulsiveSkillAccumulateable #SkillPartialable #DirectUsable
+        malice: 0, #FlankAttackAccumulateable #SkillPartialable #DirectUsable
+        mana: 0, #PotionAccumulateable #DirectUsable
+        soul: 0, #SoulExtractionAccumulateable #DirectUsable
+        gestalt: 0, #PhysicalAttackAccumulateable #DirectUsable
+        prayer: 0, #PrayerSkillAccumulateable #DirectUsable
         weight: 10
       }
     end
 
     cattr_accessor :attributes do
       capacities.keys
-    end
-
-    def self.extended(base)
-      base.attributes.each do |attribute|
-        initial_value = base[attribute] || extension_module.identity_value
-        proxify(base, attribute)
-        base.send("#{attribute}=", initial_value)
-      end
     end
   end
 end
