@@ -23,7 +23,7 @@ module Concerns
         aspd: 1,
         mspd: 1,
         hit: 1,
-        flee: 1,
+        flee: 1
       }
     end
   end
