@@ -14,7 +14,7 @@ module Concerns
 
     cattr_accessor :capacities do
       {
-        hp: 1,
+        hp: 10,
         ap: 100,
         limit: 0, #Phaseable #SkillPartialable #ShieldBlockAccumulateable
         trance: 0, #Phaseable #SkillPartialable #LowHealthAccumulateable

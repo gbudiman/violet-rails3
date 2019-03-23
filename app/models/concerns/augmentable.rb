@@ -4,12 +4,6 @@ module Concerns
   module Augmentable
     extend ActiveSupport::Concern
 
-    class_methods do
-      def extended(base)
-        base.assign_root(identity_value)
-      end
-    end
-
     def method_missing(method_name, *args)
       case method_name[-1]
       when '='

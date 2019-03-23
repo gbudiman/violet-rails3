@@ -6,8 +6,8 @@ module Concerns
 
     class_methods do
       def extended(base)
-        base.attributes.each do |attribute|
-          initial_value = base[attribute] || extension_module.identity_value
+        base.attributes.each do |attribute, identity_value|
+          initial_value = base[attribute] || identity_value
           base[attribute] = {}.extend(extension_module)
           base.tap do |t|
             t.define_singleton_method(attribute) { Proxy.new(base, attribute) }

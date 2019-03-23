@@ -9,7 +9,22 @@ module Concerns
     end
 
     cattr_accessor :attributes do
-      %i[str dex agi vit int fai patk matk pdef mdef aspd mspd hit flee].freeze
+      {
+        str: 1,
+        dex: 1,
+        agi: 1,
+        vit: 1,
+        int: 1,
+        fai: 1,
+        patk: 0,
+        matk: 0,
+        pdef: 0,
+        mdef: 0,
+        aspd: 1,
+        mspd: 1,
+        hit: 1,
+        flee: 1,
+      }
     end
   end
 end

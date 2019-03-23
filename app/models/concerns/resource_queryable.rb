@@ -8,9 +8,6 @@ module Concerns
     cattr_accessor :root_accessor do
       :current
     end
-    cattr_accessor :identity_value do
-      0
-    end
 
     def aggregate
       root
