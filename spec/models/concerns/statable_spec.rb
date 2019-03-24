@@ -8,11 +8,11 @@ RSpec.describe Concerns::Statable, type: :concern do
 
     before { input.extend(Concerns::Statable) }
 
-    Concerns::Statable.attributes.sample.each do |attribute, identity_value|
+    described_class.attributes.sample.each do |attribute, identity_value|
       let(:attribute) { attribute }
       let(:identity_value) { identity_value }
-      include_context 'class_accessors_identity'
-      include_context 'class_accessors_root_state'
+      it_behaves_like 'class_accessors_identity'
+      it_behaves_like 'class_accessors_root_state'
 
       context 'with augmentation' do
         let(:augment) { :almighty_blessing }
@@ -36,10 +36,6 @@ RSpec.describe Concerns::Statable, type: :concern do
       }
     end
 
-    let!(:pop_hash) { input.dup.extend(Concerns::Statable) }
-
-    Concerns::Statable.attributes.each do |attribute, identity_value|
-      it { expect(pop_hash.send("#{attribute}!")).to eq(input[attribute] || identity_value) }
-    end
+    it_behaves_like 'prepopulated_hash'
   end
 end
