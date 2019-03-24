@@ -30,7 +30,7 @@ RSpec.describe Concerns::Statable, type: :concern do
 
       context 'with augmentation' do
         let(:augment) { :almighty_blessing }
-        let(:rand_augment) { rand(1..30) * [-1, 1].sample }
+        let(:rand_augment) { rand(1..30) }
 
         it_behaves_like 'summable_members'
         it_behaves_like 'switchable_augmented_members'

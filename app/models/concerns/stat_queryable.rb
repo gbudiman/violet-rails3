@@ -10,7 +10,7 @@ module Concerns
     end
 
     def aggregate
-      active_values.reduce(0) { |a, b| a + b }
+      active_values.reduce(0) { |a, b| a + b }.clamp(identity_value, 255)
     end
   end
 end

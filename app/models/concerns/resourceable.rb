@@ -12,7 +12,7 @@ module Concerns
     # Accumulateable: accumulation by certain actions
     #
 
-    cattr_accessor :capacities do
+    cattr_accessor :attributes do
       {
         hp: 10,
         ap: 100,
@@ -27,10 +27,6 @@ module Concerns
         prayer: 0, # PrayerSkillAccumulateable #DirectUsable
         weight: 10
       }
-    end
-
-    cattr_accessor :attributes do
-      capacities.keys
     end
   end
 end

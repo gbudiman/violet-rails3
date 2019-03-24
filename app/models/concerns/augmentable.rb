@@ -37,11 +37,11 @@ module Concerns
     end
 
     def identity_value
-      self['__identity_value']
+      self[:__identity_value]
     end
 
     def identity_value=(value)
-      self['__identity_value'] ||= value
+      self[:__identity_value] ||= value
     end
 
     private

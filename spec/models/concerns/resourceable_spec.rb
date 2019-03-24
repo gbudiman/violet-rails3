@@ -8,9 +8,11 @@ RSpec.describe Concerns::Resourceable, type: :concern do
 
     before { input.extend(Concerns::Resourceable) }
 
-    Concerns::Resourceable.attributes.each do |attribute|
+    Concerns::Resourceable.attributes.each do |attribute, identity_value|
       let(:attribute) { attribute }
+      let(:identity_value) { identity_value }
       include_context 'class_accessors_identity'
+      include_context 'class_accessors_root_state'
     end
   end
 end

@@ -4,12 +4,12 @@ RSpec.shared_examples 'class_accessors_identity' do
   it { expect(input).to respond_to(attribute) }
   it { expect(input[attribute].root_accessor).to be_a(Symbol) }
   it { expect(input[attribute].root).to eq(identity_value) }
-  it { expect(input[attribute].identity_value).to eq(identity_value)}
+  it { expect(input[attribute].identity_value).to eq(identity_value) }
 
   it 'rejects modification to set identity value' do
     expect do
       input[attribute].send('identity_value=', 99)
-    end.not_to change{input[attribute].identity_value}
+    end.not_to(change { input[attribute].identity_value })
   end
 end
 
