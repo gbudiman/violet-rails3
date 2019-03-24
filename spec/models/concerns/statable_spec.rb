@@ -2,32 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.shared_context 'with scaffolded augmented member' do
-  before { input.send(attribute).send("#{augment}=", rand_augment) }
-end
-
-RSpec.shared_examples 'summable members' do
-  include_context 'with scaffolded augmented member'
-  it_behaves_like 'correctly-summed member'
-
-  context 'with non-identity root value' do
-    let(:rand_root) { rand(1..99) }
-
-    before { input.send("#{attribute}=", rand_root) }
-
-    it_behaves_like 'correctly-summed member'
-    it { expect(input.send(attribute).send(:non_existant_augment)).to eq(0) }
-  end
-end
-
-RSpec.shared_examples 'correctly-summed member' do
-  let(:expectation) do
-    rand_augment + (defined?(rand_root) ? rand_root : identity_value)
-  end
-
-  it { expect(input.send("#{attribute}!")).to eq(expectation) }
-end
-
 RSpec.shared_examples 'actionable augmented member' do
   let(:rand_execution) { rand(1..5) }
   let(:change_amount) { post_change - pre_change }
@@ -40,26 +14,6 @@ RSpec.shared_examples 'actionable augmented member' do
   end
 
   it { expect(action).to eq(final_value) }
-end
-
-RSpec.shared_examples 'switchable augmented member' do
-  include_context 'with scaffolded augmented member'
-  it_behaves_like 'actionable augmented member' do
-    let(:action) { input.send(attribute).disable(augment) }
-    let(:pre_change) { rand_augment }
-    let(:post_change) { 0 }
-    let(:final_value) { identity_value }
-  end
-
-  describe 'then re-enables' do
-    it_behaves_like 'actionable augmented member' do
-      let(:pre_action) { input.send(attribute).disable(augment) }
-      let(:action) { input.send(attribute).enable(augment) }
-      let(:pre_change) { 0 }
-      let(:post_change) { rand_augment }
-      let(:final_value) { identity_value + rand_augment }
-    end
-  end
 end
 
 RSpec.describe Concerns::Statable, type: :concern do
@@ -78,8 +32,8 @@ RSpec.describe Concerns::Statable, type: :concern do
         let(:augment) { :almighty_blessing }
         let(:rand_augment) { rand(1..30) * [-1, 1].sample }
 
-        it_behaves_like 'summable members'
-        it_behaves_like 'switchable augmented member'
+        it_behaves_like 'summable_members'
+        it_behaves_like 'switchable_augmented_members'
       end
     end
   end
