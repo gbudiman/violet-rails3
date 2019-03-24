@@ -38,5 +38,10 @@ RSpec.shared_examples 'summable_members' do
     before { input.send(attribute).send("#{augment}=", -rand_augment) }
 
     it_behaves_like 'clamp_summed_member'
+
+    it 'does clamping as the last operation' do
+      input.send(attribute).send('clamping_test=', rand_augment + 1)
+      expect(input.send("#{attribute}!")).to eq(identity_value + 1)
+    end
   end
 end

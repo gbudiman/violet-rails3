@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+RSpec.shared_examples 'actionable augmented member' do
+  let(:rand_execution) { rand(1..5) }
+  let(:change_amount) { post_change - pre_change }
+  it do
+    rand_execution.times { pre_action } if defined?(pre_action)
+    expect do
+      rand_execution.times { action }
+    end.to change { input[attribute][augment] }.from(pre_change).to(post_change)
+      .and change { input.send("#{attribute}!") }.by change_amount
+  end
+
+  it { expect(action).to eq(final_value) }
+end
+
 RSpec.shared_examples 'switchable_augmented_members' do
   before { input.send(attribute).send("#{augment}=", rand_augment) }
 
