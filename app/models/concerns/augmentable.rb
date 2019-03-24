@@ -36,6 +36,14 @@ module Concerns
       reject { |k, _v| k.to_s.start_with?('__') }.values
     end
 
+    def identity_value
+      self['__identity_value']
+    end
+
+    def identity_value=(value)
+      self['__identity_value'] ||= value
+    end
+
     private
 
     def cached_accessor(name)

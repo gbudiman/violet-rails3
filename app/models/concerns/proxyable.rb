@@ -14,6 +14,7 @@ module Concerns
             t.define_singleton_method("#{attribute}=") { |x| Proxy.new(base, attribute).assign_root(x) }
             t.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).aggregate }
             t.send("#{attribute}=", initial_value)
+            t.send(attribute).identity_value = identity_value
           end
         end
       end
