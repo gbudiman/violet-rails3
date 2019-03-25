@@ -6,13 +6,24 @@ RSpec.describe Concerns::Resourceable, type: :concern do
   context 'with blank hash' do
     let(:input) { {} }
 
-    before { input.extend(Concerns::Resourceable) }
+    before { input.extend(described_class) }
 
-    Concerns::Resourceable.attributes.each do |attribute, identity_value|
+    Concerns::Resourceable.attributes.sample.each do |attribute, identity_value|
       let(:attribute) { attribute }
       let(:identity_value) { identity_value }
       include_context 'class_accessors_identity'
       include_context 'class_accessors_root_state'
+
+      context 'with augmentation' do
+        let(:augment) { :almighty_blessing }
+        let(:rand_augment) { rand(1..30) }
+        let(:value_verifier) { :capacity }
+
+        #it_behaves_like 'summable_members'
+        it_behaves_like 'switchable_augmented_members'
+      end
     end
   end
+
+  it_behaves_like 'prepopulated_hash'
 end

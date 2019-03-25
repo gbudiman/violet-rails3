@@ -12,5 +12,13 @@ module Concerns
     def aggregate
       root
     end
+
+    def capacity
+      active_values.reduce(0) { |a, b| a + b }.clamp(identity_value, 255)
+    end
+
+    def return_value
+      capacity
+    end
   end
 end

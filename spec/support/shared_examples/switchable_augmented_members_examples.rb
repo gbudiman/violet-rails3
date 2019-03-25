@@ -8,7 +8,7 @@ RSpec.shared_examples 'actionable augmented member' do
     expect do
       rand_execution.times { action }
     end.to change { input[attribute][augment] }.from(pre_change).to(post_change)
-      .and change { input.send("#{attribute}!") }.by change_amount
+      .and change { input.send(attribute).send(value_verifier) }.by change_amount
   end
 
   it { expect(action).to eq(final_value) }

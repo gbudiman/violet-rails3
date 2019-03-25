@@ -24,12 +24,12 @@ module Concerns
 
     def disable(*args)
       args.map { |x| self[x] = 0 if self[x].present? }
-      aggregate
+      return_value
     end
 
     def enable(*args)
       args.map { |x| self[x] = cached_value(x) if self[x].present? }
-      aggregate
+      return_value
     end
 
     def active_values

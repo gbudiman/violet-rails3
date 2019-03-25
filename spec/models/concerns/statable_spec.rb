@@ -6,7 +6,7 @@ RSpec.describe Concerns::Statable, type: :concern do
   context 'with blank hash' do
     let(:input) { {} }
 
-    before { input.extend(Concerns::Statable) }
+    before { input.extend(described_class) }
 
     described_class.attributes.sample.each do |attribute, identity_value|
       let(:attribute) { attribute }
@@ -17,6 +17,7 @@ RSpec.describe Concerns::Statable, type: :concern do
       context 'with augmentation' do
         let(:augment) { :almighty_blessing }
         let(:rand_augment) { rand(1..30) }
+        let(:value_verifier) { :aggregate }
 
         it_behaves_like 'summable_members'
         it_behaves_like 'switchable_augmented_members'
@@ -24,18 +25,5 @@ RSpec.describe Concerns::Statable, type: :concern do
     end
   end
 
-  context 'with prepopulated hash' do
-    let(:input) do
-      {
-        str: rand(1..99),
-        agi: rand(1..99),
-        vit: rand(1..99),
-        dex: rand(1..99),
-        int: rand(1..99),
-        fai: rand(1..99)
-      }
-    end
-
-    it_behaves_like 'prepopulated_hash'
-  end
+  it_behaves_like 'prepopulated_hash'
 end
