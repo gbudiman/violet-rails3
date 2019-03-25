@@ -24,6 +24,7 @@ module Concerns
 
     def disable(*args)
       args.map { |x| self[x] = 0 if self[x].present? }
+      yield if block_given?
       return_value
     end
 

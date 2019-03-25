@@ -19,8 +19,8 @@ RSpec.describe Concerns::Resourceable, type: :concern do
         let(:rand_augment) { rand(1..30) }
         let(:value_verifier) { :capacity }
 
-        #it_behaves_like 'summable_members'
         it_behaves_like 'switchable_augmented_members'
+        it_behaves_like 'latchable_members'
       end
     end
   end
