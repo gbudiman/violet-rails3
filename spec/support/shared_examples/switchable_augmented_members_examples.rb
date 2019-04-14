@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'actionable augmented member' do
-  # let(:rand_execution) { rand(1..5) }
   let(:change_amount) { post_change - pre_change }
-  
+
   it do
     pre_action if defined?(pre_action)
     expect do
@@ -14,7 +13,8 @@ RSpec.shared_examples 'actionable augmented member' do
 
   context 'with repeated action' do
     before { action }
-    it { expect { action }.not_to change { input[attribute][augment] } }
+
+    it { expect { action }.not_to(change { input[attribute][augment] }) }
   end
 
   it { expect(action).to eq(final_value) }

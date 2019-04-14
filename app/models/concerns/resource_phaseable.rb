@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module ResourcePhaseable
     attr_accessor :phase_state # enum: %i[filling_up in_use]
