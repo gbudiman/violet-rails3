@@ -22,7 +22,7 @@ module Concerns
     end
 
     def active_values
-      reject { |k, _v| k.to_s.start_with?('__') || k == root_accessor }.values
+      reject { |k, _v| k != :__identity_value && k.to_s.start_with?('__') || k == root_accessor }.values
     end
 
     def disable(*args)

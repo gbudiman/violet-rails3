@@ -34,7 +34,7 @@ agent
   #weight     -> #resource#weight   [ResourceQueryable]
   #skills [VioletProxy]
   #execute    -> #skills#execute
-  #effects [VioletProxy]
+  #effects [VioletProxy] -> [EffectStackable | EffectMomentable | EffectToggleable]
   #anatomies [VioletProxy]
   #maim       -> #anatomies#maim
   #sunder     -> #anatomies#sunder
