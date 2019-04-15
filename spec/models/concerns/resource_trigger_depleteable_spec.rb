@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Concerns::ResourceTriggerDepleteable, type: :concern do
   let(:input) { {} }
-  let(:resource) { input.application_modules.select { |k, v| v == described_class }.first[0] }
+  let(:resource) { input.application_modules.select { |_k, v| v == described_class }.first[0] }
   let(:rand_usage) { rand(1..30) }
   let(:action) { input.send(resource).activate(rand_usage) }
 
@@ -12,7 +14,7 @@ RSpec.describe Concerns::ResourceTriggerDepleteable, type: :concern do
     before { input.send("#{resource}=", rand_usage * 2) }
 
     it { expect { action }.to change { input.send("#{resource}!") }.from(rand_usage * 2).to(0) }
-    it { expect(action).to eq( { consumed: rand_usage * 2, remainder: 0 })}
+    it { expect(action).to eq(consumed: rand_usage * 2, remainder: 0) }
   end
 
   context 'with failed activation' do

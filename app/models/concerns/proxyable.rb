@@ -16,9 +16,7 @@ module Concerns
             t.send("#{attribute}=", initial_value)
             t.send(attribute).identity_value = identity_value
 
-            if t.application_modules&.key?(attribute)
-              t[attribute].extend(t.application_modules[attribute])
-            end
+            t[attribute].extend(t.application_modules[attribute]) if t.application_modules&.key?(attribute)
           end
         end
       end
