@@ -14,6 +14,16 @@ module Concerns
       end
     end
 
+    def self!
+      root
+    end
+
+    def consume(amount, deplete_remainder: false)
+      consumed = deplete_remainder ? self[root_accessor] : amount
+      self[root_accessor] -= consumed
+      consumed
+    end
+
     def root
       self[root_accessor]
     end

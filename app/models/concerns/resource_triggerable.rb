@@ -4,13 +4,13 @@ module Concerns
   module ResourceTriggerable 
     extend ActiveSupport::Concern
 
-    class InsufficientResource < StandardError
-    end
-
-    def activate(amount, deplete_remainder: false)
-      if self! < amount
-        raise InsufficientResource
-      end
+    def activate(amount)
+      return false if self! < amount
+      
+      { 
+        consumed: block_given? ? yield : consume(amount), 
+        remainder: self! 
+      }
     end
   end
 end

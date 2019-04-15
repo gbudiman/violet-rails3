@@ -27,7 +27,7 @@ module Concerns
 
     cattr_accessor :application_modules do
       {
-        virtue: Concerns::ResourceTriggerable
+        virtue: Concerns::ResourceTriggerDepleteable
       }
     end
   end
