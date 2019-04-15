@@ -8,24 +8,26 @@ module Concerns
       Concerns::ResourceQueryable
     end
 
-    # Phaseable: 2-phase. Accumulation and expenditure phase
-    # Accumulateable: accumulation by certain actions
-    #
-
     cattr_accessor :attributes do
       {
         hp: 10,
         ap: 100,
-        virtue: 0, # Phaseable #SkillPartialable #ShieldBlockAccumulateable
+        virtue: 0, # Triggerable
         trance: 0, # Phaseable #SkillPartialable #LowHealthAccumulateable
-        orb: 0, # OrbSummonAccumulateable
-        impulse: 0, # ImpulsiveSkillAccumulateable #SkillPartialable #DirectUsable
-        malice: 0, # FlankAttackAccumulateable #SkillPartialable #DirectUsable
-        mana: 0, # PotionAccumulateable #DirectUsable
-        soul: 0, # SoulExtractionAccumulateable #DirectUsable
-        gestalt: 0, # PhysicalAttackAccumulateable #DirectUsable
-        prayer: 0, # PrayerSkillAccumulateable #DirectUsable
+        orb: 0, # Triggerable
+        impulse: 0,
+        malice: 0,
+        mana: 0,
+        soul: 0,
+        gestalt: 0,
+        prayer: 0,
         weight: 10
+      }
+    end
+
+    cattr_accessor :application_modules do
+      {
+        virtue: Concerns::ResourceTriggerable
       }
     end
   end

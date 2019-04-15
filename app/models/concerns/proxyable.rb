@@ -15,6 +15,10 @@ module Concerns
             t.define_singleton_method("#{attribute}!") { Proxy.new(base, attribute).aggregate }
             t.send("#{attribute}=", initial_value)
             t.send(attribute).identity_value = identity_value
+
+            if t.application_modules&.key?(attribute)
+              t[attribute].extend(t.application_modules[attribute])
+            end
           end
         end
       end
